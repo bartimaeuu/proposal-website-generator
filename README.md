@@ -80,7 +80,7 @@ graph TD
     subgraph "Optional Integrations"
         K[n8n Workflow] --> B
         G --> L[Stripe Payment]
-        M[Proposal Generator (AI)] --> B
+        M[AI Proposal Generator] --> B
     end
     
     style A fill:#ff9ed8,stroke:#333,stroke-width:2px
