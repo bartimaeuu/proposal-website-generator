@@ -35,6 +35,56 @@ Love automation projects like this? Join the [Getting Automated Community](https
 - **Instant Feedback**: Built-in commenting system for stakeholder input
 - **Payment Ready**: Optional Stripe integration for collecting deposits
 
+## 🔄 Automated with n8n
+
+This project includes an n8n workflow for automated proposal management. Get the complete workflow from our [detailed guide](http://gettingautomated.com/ditch-powerpoint-create-ai-proposal-sites-with-n8n-in-5-minutes/).
+
+```mermaid
+graph TD
+    A[Google Drive] -->|Monitor JSON Files| B[n8n Workflow]
+    B -->|Extract| C[Proposal JSON]
+    C -->|Optional| D[Add Stripe Link]
+    D -->|25% Deposit| E[Payment Setup]
+    E -->|Update| F[Final JSON]
+    F -->|Upload| G[S3/proposals]
+
+    style A fill:#85b4ff,stroke:#333,stroke-width:2px
+    style G fill:#90EE90,stroke:#333,stroke-width:2px
+    linkStyle default stroke:#666,stroke-width:2px
+```
+
+#### What the Workflow Does
+- Monitors a Google Drive folder for proposal JSON files
+- Automatically processes new and updated files
+- Optionally adds Stripe payment links for deposits
+- Uploads processed files to your S3 bucket
+- Maintains proposal versioning
+
+#### Key Features
+- **Automated File Processing**:
+  - Watches specific Google Drive folder
+  - Handles JSON validation
+  - Updates in near real-time (5-minute intervals)
+
+- **Payment Integration** (Optional):
+  - Creates Stripe products automatically
+  - Generates deposit payment links (configurable %)
+  - Embeds payment URLs in proposal JSON
+
+- **AWS Integration**:
+  - Direct uploads to your proposal S3 bucket
+  - Maintains proper file structure
+  - Works with CloudFront distribution
+
+#### Getting Started
+1. Visit our [step-by-step guide](http://gettingautomated.com/ditch-powerpoint-create-ai-proposal-sites-with-n8n-in-5-minutes/)
+2. Download the production-ready workflow
+3. Configure with your:
+   - Google Drive credentials
+   - AWS S3 access
+   - Stripe API keys (if using payments)
+4. Start automating your proposal deployments!
+
 ## 🚀 Perfect For
 - Sales teams tired of static PDFs going stale
 - Freelancers managing multiple client proposals
@@ -66,6 +116,7 @@ Love automation projects like this? Join the [Getting Automated Community](https
 graph TD
     A[Content Creation] --> B[JSON File]
     B --> C[S3 Bucket]
+    N[Google Drive] -->|Auto Sync| B
     
     subgraph AWS["AWS Infrastructure"]
         C --> D[CloudFront Distribution]
@@ -78,12 +129,13 @@ graph TD
     end
     
     subgraph OPT["Optional Integrations"]
-        K[n8n Workflow] --> B
+        K[n8n Workflow] --> N
         G --> L[Stripe Payment]
         M[AI Proposal Generator] --> B
     end
     
     style A fill:#ff9ed8,stroke:#333,stroke-width:2px
+    style N fill:#85b4ff,stroke:#333,stroke-width:2px
     style E fill:#85b4ff,stroke:#333,stroke-width:2px
     style G fill:#90EE90,stroke:#333,stroke-width:2px
     style AWS fill:#2A2A2A,stroke:#666,color:#fff
@@ -406,53 +458,3 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ### Roadmap
 - [ ] Analytics integration
 - [ ] Custom themes
-
-### Optional n8n Integration
-
-This project includes an n8n workflow for automated proposal management. Get the complete workflow from our [detailed guide](http://gettingautomated.com/ditch-powerpoint-create-ai-proposal-sites-with-n8n-in-5-minutes/).
-
-```mermaid
-graph TD
-    A[Google Drive] -->|Monitor JSON Files| B[n8n Workflow]
-    B -->|Extract| C[Proposal JSON]
-    C -->|Optional| D[Add Stripe Link]
-    D -->|25% Deposit| E[Payment Setup]
-    E -->|Update| F[Final JSON]
-    F -->|Upload| G[S3/proposals]
-
-    style A fill:#85b4ff,stroke:#333,stroke-width:2px
-    style G fill:#90EE90,stroke:#333,stroke-width:2px
-    linkStyle default stroke:#666,stroke-width:2px
-```
-
-#### What the Workflow Does
-- Monitors a Google Drive folder for proposal JSON files
-- Automatically processes new and updated files
-- Optionally adds Stripe payment links for deposits
-- Uploads processed files to your S3 bucket
-- Maintains proposal versioning
-
-#### Key Features
-- **Automated File Processing**:
-  - Watches specific Google Drive folder
-  - Handles JSON validation
-  - Updates in near real-time (5-minute intervals)
-
-- **Payment Integration** (Optional):
-  - Creates Stripe products automatically
-  - Generates deposit payment links (configurable %)
-  - Embeds payment URLs in proposal JSON
-
-- **AWS Integration**:
-  - Direct uploads to your proposal S3 bucket
-  - Maintains proper file structure
-  - Works with CloudFront distribution
-
-#### Getting Started
-1. Visit our [step-by-step guide](http://gettingautomated.com/ditch-powerpoint-create-ai-proposal-sites-with-n8n-in-5-minutes/)
-2. Download the production-ready workflow
-3. Configure with your:
-   - Google Drive credentials
-   - AWS S3 access
-   - Stripe API keys (if using payments)
-4. Start automating your proposal deployments!
