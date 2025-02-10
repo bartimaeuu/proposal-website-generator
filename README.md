@@ -80,12 +80,15 @@ graph TD
     subgraph "Optional Integrations"
         K[n8n Workflow] --> B
         G --> L[Stripe Payment]
-        M[AI Generator] --> B
+        M[Proposal Generator (AI)] --> B
     end
     
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style E fill:#bbf,stroke:#333,stroke-width:2px
-    style G fill:#bfb,stroke:#333,stroke-width:2px
+    style A fill:#ff9ed8,stroke:#333,stroke-width:2px
+    style E fill:#85b4ff,stroke:#333,stroke-width:2px
+    style G fill:#90EE90,stroke:#333,stroke-width:2px
+    
+    classDef default fill:#2A2A2A,stroke:#666,color:#fff,stroke-width:2px
+    classDef subgraph fill:#1A1A1A,stroke:#666
 ```
 
 ### AWS Services
