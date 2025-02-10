@@ -67,7 +67,7 @@ graph TD
     A[Content Creation] --> B[JSON File]
     B --> C[S3 Bucket]
     
-    subgraph "AWS Infrastructure"
+    subgraph AWS["AWS Infrastructure"]
         C --> D[CloudFront Distribution]
         D --> E[React Website]
         E --> F[Password Check]
@@ -77,7 +77,7 @@ graph TD
         I --> J[S3 Feedback Storage]
     end
     
-    subgraph "Optional Integrations"
+    subgraph OPT["Optional Integrations"]
         K[n8n Workflow] --> B
         G --> L[Stripe Payment]
         M[AI Proposal Generator] --> B
@@ -86,9 +86,9 @@ graph TD
     style A fill:#ff9ed8,stroke:#333,stroke-width:2px
     style E fill:#85b4ff,stroke:#333,stroke-width:2px
     style G fill:#90EE90,stroke:#333,stroke-width:2px
-    
-    classDef default fill:#2A2A2A,stroke:#666,color:#fff,stroke-width:2px
-    classDef subgraph fill:#1A1A1A,stroke:#666
+    style AWS fill:#2A2A2A,stroke:#666,color:#fff
+    style OPT fill:#2A2A2A,stroke:#666,color:#fff
+    linkStyle default stroke:#666,stroke-width:2px
 ```
 
 ### AWS Services
