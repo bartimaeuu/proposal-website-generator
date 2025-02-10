@@ -1,6 +1,6 @@
 # Proposal Website Generator
 
-[![Proposal Website Generator Tutorial](https://img.youtube.com/vi/tXKuYGaGHxo/maxresdefault.jpg)](https://youtu.be/tXKuYGaGHxo "Watch the Tutorial")
+[![Proposal Website Generator Tutorial](https://gettingautomated.com/wp-content/uploads/2025/02/FInal_Thumbnail_V3-scaled.jpg)](https://youtu.be/tXKuYGaGHxo "Watch the Tutorial")
 
 Transform your static proposals into dynamic, interactive websites. This tool helps you create modern, password-protected, and always up-to-date proposals using React, AWS, and optional n8n integration.
 
