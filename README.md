@@ -406,3 +406,30 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ### Roadmap
 - [ ] Analytics integration
 - [ ] Custom themes
+
+### Optional n8n Integration
+
+This project can be enhanced with n8n workflows for automated content management. The complete workflow is available on our [blog post](http://gettingautomated.com/ditch-powerpoint-create-ai-proposal-sites-with-n8n-in-5-minutes/).
+
+#### What the Workflow Does
+- Monitors Google Drive for new proposal documents
+- Converts PDFs to images for AI analysis
+- Uses GPT-4o for document classification and data extraction
+- Generates structured JSON output
+- Automatically uploads to S3
+- Updates tracking spreadsheets
+- Sends notifications when proposals are ready
+
+#### Getting the Workflow
+1. Visit our [detailed guide](http://gettingautomated.com/ditch-powerpoint-create-ai-proposal-sites-with-n8n-in-5-minutes/)
+2. Sign up for the Getting Automated newsletter
+3. Download the complete n8n workflow
+4. Import into your n8n instance
+
+#### Setup Requirements
+- n8n instance (self-hosted or cloud)
+- Google Workspace account
+- OpenAI API access
+- PDF processing API key
+
+For additional support and to join a community of automation builders, check out the [Getting Automated Community](https://gettingautomated.com/community).
