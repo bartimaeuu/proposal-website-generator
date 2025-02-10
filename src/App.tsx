@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
-import { ProposalForm } from './admin/ProposalForm';
 import { PasswordProtection } from './components/PasswordProtection';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
@@ -19,124 +18,8 @@ import { Contact } from './components/Contact';
 import { loadProposalContent } from './utils/proposal';
 import { WithFeedback } from './components/WithFeedback';
 import { ActiveSectionProvider } from './context/ActiveSectionContext';
-
-// Add type definition for the content
-interface ContentType {
-  clientName: string;
-  projectTitle: string;
-  industry: string;
-  description: string;
-  loomVideoUrl: string;
-  password: string;
-  projectType: string;
-  price: number;
-  stripePaymentLink: string;
-  expirationDate: string; // ISO date string
-  problemStatement: string;
-  solutionDescription: string;
-  benefits: string[];
-  whyThisProject: Array<{
-    title: string;
-    description: string;
-    icon: string;
-  }>;
-  impacts: Array<{
-    icon: string;
-    title: string;
-    description: string;
-    metric: string;
-  }>;
-  consequences: {
-    shortTerm: string[];
-    longTerm: string[];
-  };
-  solutionFeatures: Array<{
-    name: string;
-    description: string;
-    icon: string;
-    benefits: string[];
-  }>;
-  architecture: {
-    description: string;
-    sections: Array<{
-      title: string;
-      items: string[];
-    }>;
-    diagramUrl?: string; // Add optional diagramUrl
-  };
-  scope: {
-    description: string;
-    items: Array<{
-      title: string;
-      description: string;
-      deliverables: string[];
-      features: string[];
-    }>;
-  };
-  process: {
-    description: string;
-    steps: Array<{
-      title: string;
-      description: string;
-      duration: string;
-      deliverables: string[];
-      activities: string[];
-    }>;
-  };
-  nextSteps: {
-    title: string;
-    subtitle: string;
-    description: string;
-    steps: Array<{
-      icon: string;
-      title: string;
-      description: string;
-      details: string[];
-    }>;
-  };
-  faq: {
-    title: string;
-    faqs: Array<{
-      question: string;
-      answer: string;
-    }>;
-  };
-  pricing: {
-    description: string;
-    includedFeatures: Array<{
-      icon: string;
-      title: string;
-      items: string[];
-    }>;
-    paymentTerms: string[];
-    additionalCosts: string[];
-  };
-  processSteps: Array<{
-    title: string;
-    description: string;
-  }>;
-  timelineEvents: Array<{
-    title: string;
-    description: string;
-    duration: string;
-  }>;
-  contact: {
-    email: string;
-    phone: string;
-    calendly: string;
-    socialMedia?: {
-      linkedin?: string;
-      twitter?: string;
-      github?: string;
-    };
-  };
-  testimonials: Array<{
-    name: string;
-    title: string;
-    company: string;
-    testimonial: string;
-  }>;
-}
+import { ContentType } from './types/content';
+import { EnvTest } from './components/EnvTest';
 
 const ProposalPage: React.FC = () => {
   const { proposalId = 'default' } = useParams();
@@ -145,23 +28,6 @@ const ProposalPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
-
-  // Check if we're on the admin route
-  const isAdmin = window.location.pathname === '/admin';
-
-  // Validation function
-  const validateContent = (contentToValidate: ContentType) => {
-    try {
-      if (!contentToValidate.clientName || !contentToValidate.projectTitle) {
-        console.error('Missing required fields in content');
-        return false;
-      }
-      return true;
-    } catch (err) {
-      console.error('Error validating content:', err);
-      return false;
-    }
-  };
 
   useEffect(() => {
     const loadContent = async () => {
@@ -172,12 +38,8 @@ const ProposalPage: React.FC = () => {
         
         const proposalContent = await loadProposalContent(proposalId);
         
-        if (!validateContent(proposalContent)) {
-          throw new Error('Invalid proposal content structure');
-        }
-        
-        // If not admin and proposal requires password, don't set content yet
-        if (!isAdmin && proposalContent.password && !isAuthenticated) {
+        // If proposal requires password and not authenticated, don't set content yet
+        if (proposalContent.password && !isAuthenticated) {
           setContent({ ...proposalContent, password: proposalContent.password });
         } else {
           setContent(proposalContent);
@@ -192,7 +54,7 @@ const ProposalPage: React.FC = () => {
     };
 
     loadContent();
-  }, [proposalId, isAdmin, isAuthenticated]);
+  }, [proposalId, isAuthenticated]);
 
   const handleAuthentication = (password: string) => {
     if (content?.password === password) {
@@ -243,7 +105,7 @@ const ProposalPage: React.FC = () => {
   }
 
   // Show password protection if needed
-  if (!isAdmin && content.password && !isAuthenticated) {
+  if (content?.password && !isAuthenticated) {
     return (
       <PasswordProtection
         onAuthenticated={handleAuthentication}
@@ -254,7 +116,7 @@ const ProposalPage: React.FC = () => {
   }
 
   // Check expiration
-  if (!isAdmin && content.expirationDate) {
+  if (content?.expirationDate) {
     const expirationDate = new Date(content.expirationDate);
     if (expirationDate < new Date()) {
       return (
@@ -393,17 +255,9 @@ const ProposalPage: React.FC = () => {
         <Contact content={content} />
       </WithFeedback>
       
+      <EnvTest />
+      
       <Footer />
-    </div>
-  );
-};
-
-const AdminPage: React.FC = () => {
-  return (
-    <div className="min-h-screen bg-gray-100 py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Admin Dashboard</h1>
-      </div>
     </div>
   );
 };
@@ -413,8 +267,6 @@ function App() {
     <ActiveSectionProvider>
       <Router>
         <Routes>
-          {/* <Route path="/admin" element={<AdminPage />} /> */}
-          <Route path="/proposalform" element={<ProposalForm />} />
           <Route path="/:proposalId?" element={<ProposalPage />} />
         </Routes>
       </Router>

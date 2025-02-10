@@ -1,98 +1,215 @@
 # Proposal Website Generator
 
-A serverless web application for creating and hosting proposal websites. Built with React, TypeScript, and AWS services.
+[![Proposal Website Generator Tutorial](https://img.youtube.com/vi/tXKuYGaGHxo/maxresdefault.jpg)](https://youtu.be/tXKuYGaGHxo "Watch the Tutorial")
+
+Transform your static proposals into dynamic, interactive websites. This tool helps you create modern, password-protected, and always up-to-date proposals using React, AWS, and optional n8n integration.
+
+## 🤖 AI Proposal Generator
+
+Need help creating your proposal content? Visit our [AI Proposal Generator](https://tools.gettingautomated.com/) to:
+- Generate proposal content using GPT-4o
+- Use our form-based JSON generator
+- Export proposal-ready JSON files
+- Create first drafts in seconds
+- Customize all sections interactively
+
+Cost: ~$0.01-0.02 per proposal with GPT-4o
+
+## 🤝 Join Our Community
+
+Love automation projects like this? Join the [Getting Automated Community](https://gettingautomated.com/community) to:
+- Get early access to new automation tools
+- Connect with fellow automation enthusiasts
+- Share and discover automation recipes
+- Learn about the latest AI & automation techniques
+- Get support for your automation projects
+
+[Join the waitlist](https://gettingautomated.com/community) to be notified when we launch!
+
+## 🎯 Why Use This?
+- **Always Current**: No more outdated PDFs or PowerPoints - your proposal stays fresh
+- **Interactive Experience**: Rich media, feedback collection, and direct payment options
+- **Professional Polish**: Sleek, responsive design that works on all devices
+- **Cost-Effective**: Serverless architecture means hosting costs of ~$1/month
+- **Secure Sharing**: Simple password protection and expiration dates
+- **Instant Feedback**: Built-in commenting system for stakeholder input
+- **Payment Ready**: Optional Stripe integration for collecting deposits
+
+## 🚀 Perfect For
+- Sales teams tired of static PDFs going stale
+- Freelancers managing multiple client proposals
+- Agencies needing a scalable proposal system
+- Businesses wanting a more professional proposal flow
+
+## 💡 Key Features
+- **Dynamic Content**: JSON-based content management
+- **Password Protection**: Basic access control per proposal
+- **Feedback System**: Section-by-section commenting
+- **Payment Integration**: Optional Stripe payment links
+- **Rich Media**: Support for videos, images, and interactive elements
+- **Mobile Responsive**: Looks great on all devices
+- **Analytics Ready**: Track proposal views and engagement
+- **Always Up-to-Date**: Single URL that's always current
+
+## 💰 Cost Breakdown
+- AWS Hosting: ~$1/month (S3 + CloudFront)
+- Optional Integrations:
+  - n8n: Free (self-hosted) or minimal monthly fee (cloud)
+  - Stripe: Standard transaction fees
+  - AI Generation: ~$0.01-0.02 per proposal with GPT-4o
 
 ## Architecture
 
+### System Flow
+
+```mermaid
+graph TD
+    A[Content Creation] --> B[JSON File]
+    B --> C[S3 Bucket]
+    
+    subgraph "AWS Infrastructure"
+        C --> D[CloudFront Distribution]
+        D --> E[React Website]
+        E --> F[Password Check]
+        F --> G[Display Proposal]
+        G --> H[Feedback System]
+        H --> I[Lambda Function]
+        I --> J[S3 Feedback Storage]
+    end
+    
+    subgraph "Optional Integrations"
+        K[n8n Workflow] --> B
+        G --> L[Stripe Payment]
+        M[AI Generator] --> B
+    end
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style E fill:#bbf,stroke:#333,stroke-width:2px
+    style G fill:#bfb,stroke:#333,stroke-width:2px
+```
+
 ### AWS Services
 
-- **S3**: Stores proposal content and feedback data
-- **CloudFront**: Serves proposal content with edge caching
-- **Lambda**: Handles feedback submission and retrieval
-- **IAM**: Manages service permissions and access control
+- **S3**: 
+  - Stores proposal content in JSON format
+  - Hosts static website assets
+  - Separate paths for proposals and feedback
+- **CloudFront**: 
+  - Serves website content with edge caching
+  - Custom domain support with SSL/TLS
+  - Origin Access Control (OAC) for S3 security
+- **Lambda**: 
+  - Handles feedback submission and retrieval
+  - CORS-enabled function URL
+  - S3 integration for feedback storage
+- **ACM**: 
+  - SSL/TLS certificate management
+  - Automatic DNS validation
+- **IAM**: 
+  - Granular bucket access policies
+  - Lambda execution roles
+  - Feedback management user
 
 ## 🌟 Features
 
 ### Content Management
-- **Admin Interface**
-  - Intuitive form-based editing
-  - Real-time preview
-  - Content validation
 - **JSON Content Structure**
   - Flexible data schema
-  - Easy to extend
   - Version control friendly
-  - Validation with Zod
+  - Content validation
 - **Feedback System**
   - Section-based comments
-  - Real-time updates
   - Persistent storage
-  - Error handling
 
 ### UI Components
 - **Hero Section**
-  - Dynamic backgrounds
-  - Responsive layout
-  - Custom typography
-  - Call-to-action buttons
+  - Project overview
+  - Client details
+  - Loom video integration
 - **Problem/Solution**
+  - Problem statement
+  - Solution description
+  - Benefits list
   - Impact analysis
-  - Visual comparisons
-  - Key metrics display
-  - Custom icons
 - **Feature Showcase**
-  - Icon selection
-  - Benefit highlights
-  - Interactive tooltips
-  - Responsive grid
+  - Solution features
+  - Benefits
+  - Technical details
 - **Timeline/Process**
-  - Visual progress indicators
-  - Milestone tracking
-  - Date management
-  - Phase descriptions
+  - Project phases
+  - Deliverables
+  - Activities
 - **Pricing Tables**
-  - Multiple tier support
-  - Feature comparison
-  - Custom pricing options
-  - Highlight recommended
+  - Project pricing
+  - Included features
+  - Payment terms
 - **FAQ Section**
-  - Collapsible answers
-  - Category organization
-  - Search functionality
-  - Easy updates
+  - Common questions
+  - Detailed answers
 - **Contact Integration**
-  - Calendly scheduling
+  - Contact details
+  - Calendly integration
   - Social media links
-  - Custom forms
-  - Meeting preferences
 
 ### Security Features
-- **Content Protection**
-  - CloudFront for proposals
-  - Lambda for feedback
+- **Basic Protection**
+  - Password protection option
+  - Expiration dates
+  - CloudFront distribution
 - **AWS Security**
   - S3 bucket policies
-  - IAM role management
   - CloudFront OAC
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 1. **Node.js Environment**
    - Node.js v16 or higher
    - npm or yarn package manager
-   - TypeScript support
 
 2. **AWS Account Setup**
-   - IAM user for CloudFormation
-   - AWS CLI installed and configured
-   - Default region set
+   - AWS CLI installed and configured with admin access
+   - Required IAM permissions (Note: These permissions are broad for ease of setup. For production, consider restricting to specific resources and actions needed):
+     ```json
+     {
+       "Version": "2012-10-17",
+       "Statement": [
+         {
+           "Effect": "Allow",
+           "Action": [
+             "cloudformation:*",
+             "s3:*",
+             "cloudfront:*",
+             "lambda:*",
+             "iam:*",
+             "acm:*",
+             "logs:*",
+             "route53:*"
+           ],
+           "Resource": "*"
+         }
+       ]
+     }
+     ```
+   - For a more secure production environment, consider:
+     - Limiting resources to specific ARNs
+     - Restricting actions to only those needed
+     - Using separate deployment and runtime roles
+     - Following the principle of least privilege
+   - Domain name you control (for SSL certificate validation)
+   - Ability to update DNS records for your domain
+   - AWS Region with ACM certificate support (us-east-1 recommended)
 
 3. **Domain Requirements**
    - Registered domain name
-   - DNS access
-   - SSL certificate in ACM
-   - Route 53 (optional)
+   - Ability to add/modify DNS records
+   - If using Route 53:
+     - Domain should be in Route 53
+     - Additional permission: `route53:ListHostedZones`
+   - If using another DNS provider:
+     - Access to add CNAME records for ACM validation
+     - Access to add CNAME record for CloudFront distribution
 
 ### Installation
 
@@ -104,49 +221,82 @@ cd proposal-website-generator
 
 # Install dependencies
 npm install
-
-# Install dev dependencies
-npm install -D @types/react @types/node
 ```
 
-2. **Environment Configuration**
+2. **AWS Infrastructure Setup**
 ```bash
-# Create environment files
-cp .env.example .env
-cp provision_aws/.env.example provision_aws/.env
+# Configure AWS deployment
+cd provision_aws
+cp .env.sample .env
 
-# Configure main .env
+# Update .env with your settings
+DOMAIN_NAME="proposals.yourdomain.com"
 COMPANY_NAME="Your Company"
 REGION="us-east-1"
-DOMAIN_NAME="proposals.yourcompany.com"
-VITE_CLOUDFRONT_URL="https://xxx.cloudfront.net"
-VITE_FEEDBACK_URL="https://xxxx.lambda-url.us-east-1.on.aws"
+ENVIRONMENT="prod"
 
-# Configure AWS .env
-AWS_PROFILE=default
-CERTIFICATE_ARN=arn:aws:acm:us-east-1:xxxx
-```
-
-3. **AWS Deployment**
-```bash
-# Deploy infrastructure
-cd provision_aws
+# Deploy AWS infrastructure
 ./provision.sh
-
-# Verify deployment
-aws cloudformation describe-stacks --stack-name proposal-website
-
-# Upload example content
-./scripts/upload-examples.sh
 ```
 
-4. **Local Development**
+3. **Environment Configuration**
 ```bash
-# Start dev server
-npm run dev
+# Create environment file
+cp .env.example .env
 
-# Run type checking
-npm run type-check
+# Configure .env (values provided by provision.sh)
+VITE_CLOUDFRONT_URL=https://your-cloudfront-url.net
+VITE_AWS_BUCKET_NAME=your-bucket-name
+VITE_FEEDBACK_URL=https://your-lambda-url.lambda-url.region.on.aws/
+```
+
+## 🔐 Security Implementation
+
+### AWS Security
+
+1. **S3 Bucket Security**
+   - CloudFront Origin Access Control (OAC)
+   - Bucket policies for specific paths
+   - Public access blocked
+   - CORS configuration for API access
+
+2. **CloudFront Configuration**
+   - HTTPS-only access
+   - Custom SSL/TLS certificate
+   - Cache behaviors for different paths
+   - Origin access restrictions
+
+3. **Lambda Security**
+   - Function URL with CORS
+   - IAM execution role
+   - Limited S3 permissions
+   - Request origin validation
+
+4. **Content Protection**
+   - Optional password protection
+   - Expiration dates
+   - Proposal-specific access control
+
+### Content Access
+
+1. **Proposals**
+   - Served via CloudFront
+   - JSON files in S3
+   - Optional password protection
+   - Expiration date checks
+
+2. **Feedback System**
+   - Lambda function URL endpoint
+   - S3 storage in feedback/
+   - Origin validation
+   - Error handling
+
+## 📝 Development
+
+### Local Development
+```bash
+# Start development server
+npm run dev
 
 # Build for production
 npm run build
@@ -155,248 +305,91 @@ npm run build
 npm run preview
 ```
 
+### Deployment
+```bash
+# Deploy infrastructure changes
+cd provision_aws
+./provision.sh
+
+# Deploy website updates
+npm run build
+# (provision.sh handles the S3 upload and CloudFront invalidation)
+```
+
 ## 📁 Project Structure
 
 ```
-├── provision_aws/                # AWS Infrastructure
-│   ├── provision.sh             # Main deployment script
-│   ├── template.yaml            # CloudFormation template
-│   └── .env                     # AWS configuration
-├── scripts/                     # Utility Scripts
-│   ├── upload-examples.sh       # Example uploader
-│   └── generate-content.js      # Content generator
 ├── src/
-│   ├── admin/                   # Admin Interface
-│   │   ├── components/          # Admin-specific components
-│   │   │   ├── DynamicForm/    # Form generation
-│   │   │   ├── IconSelector/   # Icon picker
-│   │   │   └── Preview/        # Live preview
-│   │   └── ProposalForm/       # Main form logic
-│   ├── components/              # Shared Components
-│   │   ├── layout/             # Layout components
-│   │   ├── ui/                 # UI elements
-│   │   ├── Feedback/           # Feedback component
-│   │   └── sections/           # Proposal sections
-│   ├── data/                   # Content & Templates
-│   │   ├── examples/           # Example proposals
-│   │   └── schemas/            # Content schemas
-│   ├── hooks/                  # Custom React hooks
-│   ├── styles/                 # Global styles
-│   ├── types/                  # TypeScript types
-│   └── utils/                  # Utility functions
-│   │   ├── feedback.ts         # Feedback handling
-│   │   └── proposal.ts         # Proposal loading
-│   └── tests/                     # Test suites
+│   ├── components/          # React components
+│   │   ├── Hero/           # Hero section
+│   │   ├── Problem/        # Problem statement
+│   │   ├── Solution/       # Solution details
+│   │   └── ...            # Other components
+│   ├── types/              # TypeScript types
+│   ├── utils/              # Utility functions
+│   │   ├── proposal.ts     # Proposal loading
+│   │   └── feedback.ts     # Feedback handling
+│   └── context/            # React context
+├── public/                 # Static assets
+└── .env                    # Environment variables
 ```
 
 ## 🛠 Usage Guide
 
 ### Creating New Proposals
 
-1. **Access Admin Interface**
-   - Navigate to `/admin`
-   - Log in if required
-   - Select "New Proposal"
+1. Create a JSON file with your proposal content following the ContentType interface
+2. Upload the JSON file to your S3 bucket
+3. Access the proposal at `yourdomain.com/proposal-id`
 
-2. **Basic Information**
-   - Client name and details
-   - Project title
-   - Industry/category
-   - Overview description
+### Content Structure
 
-3. **Content Sections**
-   - Problem statement
-     - Current challenges
-     - Impact analysis
-     - Market context
-   - Solution features
-     - Key benefits
-     - Technical details
-     - Implementation approach
-   - Process/Timeline
-     - Project phases
-     - Milestones
-     - Deliverables
-   - Pricing/Investment
-     - Cost breakdown
-     - Payment terms
-     - Optional add-ons
+Your proposal JSON should include:
+- Client information
+- Project details
+- Problem statement
+- Solution description
+- Technical architecture
+- Process and timeline
+- Pricing details
+- FAQ
+- Contact information
 
-4. **Customization**
-   - Brand colors
-   - Typography
-   - Custom images
-   - Icon selection
-
-5. **Security Settings**
-   - Password protection
-   - Expiration date
-   - Access restrictions
-   - Tracking options
-
-6. **Preview & Publish**
-   - Review all sections
-   - Test responsiveness
-   - Check integrations
-   - Generate URL
-
-### Example Templates
-
-1. **Using Templates**
-   ```bash
-   # List available templates
-   ls src/data/examples/
-
-   # Copy template
-   cp src/data/examples/company-xyz.json src/data/proposals/new-proposal.json
-
-   # Upload to S3
-   ./scripts/upload-examples.sh
-   ```
-
-2. **Creating Templates**
-   - Start with base schema
-   - Add custom sections
-   - Include sample content
-   - Document customization
-
-### Feedback System
-
-1. **Implementation**
-   - Lambda Function URL for API
-   - Single comments.json per proposal
-   - Section-based feedback
-   - Automatic timestamp and ID generation
-
-2. **Features**
-   - Get feedback by proposal
-   - Submit new feedback
-   - Cache management
-   - Error handling
-
-3. **Security**
-   - CORS validation
-   - Origin checking
-   - S3 bucket policies
-   - Lambda permissions
-
-## 🔐 Security Implementation
-
-### AWS Security
-
-1. **S3 Bucket Policies**
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "CloudFrontAccess",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "cloudfront.amazonaws.com"
-      },
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::bucket-name/*",
-      "Condition": {
-        "StringEquals": {
-          "AWS:SourceArn": "arn:aws:cloudfront::account-id:distribution/dist-id"
-        }
-      }
-    }
-  ]
-}
-```
-
-2. **IAM Roles**
-   - Proposal creator role
-   - Content manager role
-   - Admin role
-   - Read-only role
-
-### Content Security
+### Optional Features
 
 1. **Password Protection**
-   - Bcrypt hashing
-   - Salt generation
-   - Temporary access
-   - Rate limiting
+   - Add a password field to your JSON
+   - Users will need to enter the password to view
 
-2. **URL Security**
-   - Signed URLs
-   - Expiration
-   - IP restrictions
-   - Referrer checking
+2. **Expiration Date**
+   - Add an expirationDate field
+   - Proposal becomes inaccessible after date
 
-## 📝 Development
+3. **Feedback Collection**
+   - Users can leave feedback on each section
+   - Feedback stored via Lambda function
 
-### Local Development
-```bash
-# Start development
-npm run dev
+## 🔐 Security Considerations
 
-# Type checking
-npm run type-check
+1. **Content Access**
+   - CloudFront distribution protects S3 content
+   - Optional password protection
+   - Expiration dates
 
-# Testing
-npm run test
-npm run test:watch
+2. **Password Protection Limitations**
+   - The password protection is implemented client-side and is intended for basic access control only
+   - The password is stored in plain text in the proposal JSON
+   - Not suitable for highly sensitive information
+   - Can be supplemented with:
+     - AWS Cognito for user authentication
+     - AWS WAF for additional security rules
+     - IP-based restrictions via CloudFront
+     - Custom Lambda@Edge authentication
 
-# Linting
-npm run lint
-npm run lint:fix
-```
-
-### AWS Deployment
-```bash
-# Full deployment
-cd provision_aws
-./provision.sh
-
-# Update content only
-./scripts/upload-examples.sh
-
-# Update infrastructure
-aws cloudformation deploy \
-  --template-file template.yaml \
-  --stack-name proposal-website
-```
-
-### Environment Variables
-
-1. **Development**
-```env
-VITE_AWS_REGION=us-east-1
-VITE_CLOUDFRONT_URL=https://xxx.cloudfront.net
-VITE_API_ENDPOINT=https://api.example.com
-```
-
-2. **Production**
-```env
-NODE_ENV=production
-COMPANY_NAME=Your Company
-DOMAIN_NAME=proposals.company.com
-```
-
-## 🤝 Contributing
-
-1. Fork repository
-2. Create feature branch
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
-3. Make changes
-   - Follow style guide
-   - Add tests
-   - Update documentation
-4. Commit changes
-   ```bash
-   git commit -m 'Add amazing feature'
-   ```
-5. Push to branch
-   ```bash
-   git push origin feature/amazing-feature
-   ```
-6. Open Pull Request
+3. **AWS Configuration**
+   - S3 bucket configured for CloudFront access only
+   - Lambda function URL with CORS settings
+   - Proper IAM roles and policies
 
 ## 📄 License
 
@@ -406,26 +399,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ### Version History
 - v1.0.0 - Initial release
-- v1.1.0 - AWS integration
-- v1.2.0 - Enhanced security
-- v1.3.0 - Example templates
 
 ### Roadmap
-- [ ] Multi-language support
 - [ ] Analytics integration
 - [ ] Custom themes
-- [ ] API documentation
-
-## 🔄 Updates & Maintenance
-
-### Version History
-- v1.0.0 - Initial release
-- v1.1.0 - AWS integration
-- v1.2.0 - Enhanced security
-- v1.3.0 - Example templates
-
-### Roadmap
-- [ ] Multi-language support
-- [ ] Analytics integration
-- [ ] Custom themes
-- [ ] API documentation

@@ -1,23 +1,24 @@
 import { ContentType } from '../types/content';
 import { resolveContent } from './contentResolver';
 
-const CLOUDFRONT_URL = import.meta.env.VITE_CLOUDFRONT_URL?.replace(/\/$/, '') || '';
+// Try different ways to access the env variable
+const CLOUDFRONT_URL = 
+  import.meta.env.VITE_CLOUDFRONT_URL || 
+  process.env.VITE_CLOUDFRONT_URL || 
+  '';
 
-function validateContent(content: any): content is ContentType {
-  const requiredFields = [
-    'clientName',
-    'projectTitle',
-    'description'
-  ];
-
-  const missingFields = requiredFields.filter(field => !content[field]);
-  if (missingFields.length > 0) {
-    console.error('Missing required fields:', missingFields);
+export const validateContent = (content: ContentType): boolean => {
+  try {
+    if (!content.clientName || !content.projectTitle) {
+      console.error('Missing required fields in content');
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error('Error validating content:', err);
     return false;
   }
-
-  return true;
-}
+};
 
 export function validateProposalContent(content: ContentType): void {
   if (!content) {
@@ -106,9 +107,26 @@ export function validateProposalContent(content: ContentType): void {
 
 export async function loadProposalContent(proposalId: string): Promise<ContentType> {
   try {
+    // Add more detailed debugging logs
+    console.log('Environment check:', {
+      CLOUDFRONT_URL,
+      importMetaEnv: import.meta.env.VITE_CLOUDFRONT_URL,
+      processEnv: process.env.VITE_CLOUDFRONT_URL,
+      allImportMetaEnv: import.meta.env,
+      mode: import.meta.env.MODE,
+      dev: import.meta.env.DEV
+    });
+
     // Ensure we have the CloudFront URL
     if (!CLOUDFRONT_URL) {
-      throw new Error('CloudFront URL is not configured');
+      throw new Error(
+        'CloudFront URL is not configured. Please check:\n' +
+        '1. .env file exists in project root\n' +
+        '2. VITE_CLOUDFRONT_URL is set correctly\n' +
+        '3. Development server was restarted\n' +
+        `Current environment: ${import.meta.env.MODE}\n` +
+        `Current value: ${import.meta.env.VITE_CLOUDFRONT_URL}`
+      );
     }
 
     // Construct the full URL
