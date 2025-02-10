@@ -409,27 +409,50 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ### Optional n8n Integration
 
-This project can be enhanced with n8n workflows for automated content management. The complete workflow is available on our [blog post](http://gettingautomated.com/ditch-powerpoint-create-ai-proposal-sites-with-n8n-in-5-minutes/).
+This project includes an n8n workflow for automated proposal management. Get the complete workflow from our [detailed guide](http://gettingautomated.com/ditch-powerpoint-create-ai-proposal-sites-with-n8n-in-5-minutes/).
+
+```mermaid
+graph TD
+    A[Google Drive] -->|Monitor JSON Files| B[n8n Workflow]
+    B -->|Extract| C[Proposal JSON]
+    C -->|Optional| D[Add Stripe Link]
+    D -->|25% Deposit| E[Payment Setup]
+    E -->|Update| F[Final JSON]
+    F -->|Upload| G[S3/proposals]
+
+    style A fill:#85b4ff,stroke:#333,stroke-width:2px
+    style G fill:#90EE90,stroke:#333,stroke-width:2px
+    linkStyle default stroke:#666,stroke-width:2px
+```
 
 #### What the Workflow Does
-- Monitors Google Drive for new proposal documents
-- Converts PDFs to images for AI analysis
-- Uses GPT-4o for document classification and data extraction
-- Generates structured JSON output
-- Automatically uploads to S3
-- Updates tracking spreadsheets
-- Sends notifications when proposals are ready
+- Monitors a Google Drive folder for proposal JSON files
+- Automatically processes new and updated files
+- Optionally adds Stripe payment links for deposits
+- Uploads processed files to your S3 bucket
+- Maintains proposal versioning
 
-#### Getting the Workflow
-1. Visit our [detailed guide](http://gettingautomated.com/ditch-powerpoint-create-ai-proposal-sites-with-n8n-in-5-minutes/)
-2. Sign up for the Getting Automated newsletter
-3. Download the complete n8n workflow
-4. Import into your n8n instance
+#### Key Features
+- **Automated File Processing**:
+  - Watches specific Google Drive folder
+  - Handles JSON validation
+  - Updates in near real-time (5-minute intervals)
 
-#### Setup Requirements
-- n8n instance (self-hosted or cloud)
-- Google Workspace account
-- OpenAI API access
-- PDF processing API key
+- **Payment Integration** (Optional):
+  - Creates Stripe products automatically
+  - Generates deposit payment links (configurable %)
+  - Embeds payment URLs in proposal JSON
 
-For additional support and to join a community of automation builders, check out the [Getting Automated Community](https://gettingautomated.com/community).
+- **AWS Integration**:
+  - Direct uploads to your proposal S3 bucket
+  - Maintains proper file structure
+  - Works with CloudFront distribution
+
+#### Getting Started
+1. Visit our [step-by-step guide](http://gettingautomated.com/ditch-powerpoint-create-ai-proposal-sites-with-n8n-in-5-minutes/)
+2. Download the production-ready workflow
+3. Configure with your:
+   - Google Drive credentials
+   - AWS S3 access
+   - Stripe API keys (if using payments)
+4. Start automating your proposal deployments!
