@@ -105,8 +105,8 @@ load_env() {
     fi
     
     STACK_NAME="proposal-website-${COMPANY_NAME// /-}"
-    DOMAIN_NAME=${DOMAIN_NAME:-"proposals.gettingautomated.com"}
-    BUCKET_NAME=${BUCKET_NAME:-"proposals.gettingautomated.com"}
+    DOMAIN_NAME=${DOMAIN_NAME:-"proposals.enrichedleads.com"}
+    BUCKET_NAME=${BUCKET_NAME:-"proposals.enrichedleads.com"}
     ENVIRONMENT=${ENVIRONMENT:-"prod"}
     CERTIFICATE_ARN=${CERTIFICATE_ARN:-""}
     
